@@ -45,14 +45,28 @@ document.getElementById('name').addEventListener('touchend', () => {
 });
 
 function heartRain() {
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 15; i++) {
     const h = document.createElement('div');
     h.className = 'heart';
     h.textContent = '💖';
     h.style.left = Math.random() * 100 + 'vw';
     h.style.bottom = '0';
+    h.style.fontSize = Math.random() * 30 + 20 + 'px';
+    h.style.position = 'absolute';
+    h.style.zIndex = 1000;
     document.body.appendChild(h);
-    setTimeout(() => h.remove(), 2000);
+
+    // float up effect
+    const duration = Math.random() * 1500 + 2000;
+    h.animate(
+      [
+        { transform: 'translateY(0px)', opacity: 1 },
+        { transform: `translateY(-${Math.random() * 200 + 150}px)`, opacity: 0 }
+      ],
+      { duration }
+    );
+
+    setTimeout(() => h.remove(), duration);
   }
 }
 
@@ -65,8 +79,8 @@ lokkhiScene.addEventListener('touchstart', () => {
 lokkhiScene.addEventListener('touchend', () => clearTimeout(pressTimer));
 
 function revealLokkhi() {
-  lokkhiScene.querySelector('.text').innerHTML =
-    "Lokkhi mane bhalo mon, shanto, pure…<br>aar sheta tumi, Oishi 💛";
+  const textDiv = lokkhiScene.querySelector('.text');
+  typeWriter(textDiv, "Lokkhi mane bhalo mon, shanto, pure…\nAar sheta tumi, Oishi 💛", 50);
 }
 
 // Hug squeeze
@@ -84,22 +98,70 @@ teddyScene.addEventListener('touchstart', () => {
   }, 700);
 });
 teddyScene.addEventListener('touchend', () => clearTimeout(pressTimer));
-// Propose Day buttons
+
+// ==================== Proposal Buttons ====================
 const yesBtn = document.querySelector('.yes-btn');
 const alwaysBtn = document.querySelector('.always-btn');
 
 function proposalResponse(message) {
-  alert(message);
+  // Delay to create drama
+  setTimeout(() => {
+    // Show alert
+    alert(message);
+    // Celebrate with hearts
+    for (let i = 0; i < 20; i++) {
+      createHeartAtButton(i % 2 === 0 ? yesBtn : alwaysBtn);
+    }
+  }, 500); // half-second pause before response
+}
+
+function createHeartAtButton(btn) {
+  const rect = btn.getBoundingClientRect();
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.textContent = '💛';
+  h.style.position = 'absolute';
+  h.style.left = rect.left + rect.width / 2 + (Math.random() * 40 - 20) + 'px';
+  h.style.top = rect.top + 'px';
+  h.style.fontSize = Math.random() * 25 + 15 + 'px';
+  document.body.appendChild(h);
+
+  // float up animation
+  const duration = Math.random() * 1500 + 2000;
+  h.animate(
+    [
+      { transform: 'translateY(0px)', opacity: 1 },
+      { transform: `translateY(-${Math.random() * 200 + 150}px)`, opacity: 0 }
+    ],
+    { duration }
+  );
+  setTimeout(() => h.remove(), duration);
 }
 
 if (yesBtn && alwaysBtn) {
   yesBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+    yesBtn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.2)' }, { transform: 'scale(1)' }], { duration: 400 });
     proposalResponse("She said YES 💖\nAmi shotti lucky, Lokkhi.");
   });
 
   alwaysBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+    alwaysBtn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.2)' }, { transform: 'scale(1)' }], { duration: 400 });
     proposalResponse("Always… 🥺💛\nEi word ta amar shob.");
   });
+}
+
+// ==================== Typing Effect ====================
+function typeWriter(element, text, speed = 50) {
+  element.textContent = '';
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      element.innerHTML += text[i] === '\n' ? '<br>' : text[i];
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+  type();
 }
