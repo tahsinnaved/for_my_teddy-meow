@@ -2,6 +2,8 @@
   --pink: #ffd6e8;
   --lavender: #e9ddff;
   --text: #4a4a4a;
+  --heart-color: #ff4da6;
+  --confetti-color: #ffd700;
 }
 
 * {
@@ -74,6 +76,19 @@ body::before {
   line-height: 1.6;
 }
 
+/* Typing cursor effect */
+.text.typing::after {
+  content: '|';
+  animation: blink 0.7s infinite;
+  margin-left: 2px;
+  font-weight: 700;
+  color: var(--text);
+}
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
 .big {
   font-size: 3.2rem;
   margin-bottom: 18px;
@@ -104,11 +119,14 @@ body::before {
 .rose { animation: bloom 1s ease forwards; }
 .choco, .kiss, .teddy { animation: bounce 1.3s infinite; }
 
-/* Heart rain */
+/* Heart rain / button hearts */
 .heart {
   position: absolute;
   font-size: 1.4rem;
   animation: floatUp 2s ease forwards;
+  color: var(--heart-color);
+  pointer-events: none;
+  z-index: 1000;
 }
 
 /* Hug squeeze */
@@ -128,8 +146,10 @@ body::before {
   right: 14px;
   font-size: 1.3rem;
   opacity: 0.6;
+  cursor: pointer;
 }
 
+/* Proposal Scene */
 .propose-scene .text {
   margin-bottom: 24px;
 }
@@ -164,4 +184,31 @@ body::before {
 .proposal-buttons button:active {
   transform: scale(0.95);
 }
+
+/* Button pulse animation on click */
+.proposal-buttons button.pulse {
+  animation: pulseBtn 0.4s ease forwards;
+}
+@keyframes pulseBtn {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Confetti effect */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--confetti-color);
+  opacity: 0.9;
+  z-index: 999;
+  pointer-events: none;
+  border-radius: 50%;
+  animation: confettiFall 2s linear forwards;
+}
+@keyframes confettiFall {
+  to { transform: translateY(250px) rotate(360deg); opacity: 0; }
+}
+
 
