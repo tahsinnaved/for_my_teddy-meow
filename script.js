@@ -84,3 +84,22 @@ teddyScene.addEventListener('touchstart', () => {
   }, 700);
 });
 teddyScene.addEventListener('touchend', () => clearTimeout(pressTimer));
+// Propose Day buttons
+const yesBtn = document.querySelector('.yes-btn');
+const alwaysBtn = document.querySelector('.always-btn');
+
+function proposalResponse(message) {
+  alert(message);
+}
+
+if (yesBtn && alwaysBtn) {
+  yesBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    proposalResponse("She said YES 💖\nAmi shotti lucky, Lokkhi.");
+  });
+
+  alwaysBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    proposalResponse("Always… 🥺💛\nEi word ta amar shob.");
+  });
+}
